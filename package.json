@@ -1,0 +1,32 @@
+{
+  "name": "dms-relations-and-schema-stiching-poc",
+  "version": "1.0.0",
+  "description": "POC to demonstrate schema stiching schemas that have relations",
+  "main": "./dist/app.js",
+  "scripts": {
+    "start": "npm run build && npm run serve",
+    "build": "tsc",
+    "serve": "node ./dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zenika/dms-relations-and-schema-stiching-poc.git"
+  },
+  "author": "Clément Fassot <Clément Fassot> (https://twitter.com/fassotC)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zenika/dms-relations-and-schema-stiching-poc/issues"
+  },
+  "homepage": "https://github.com/Zenika/dms-relations-and-schema-stiching-poc#readme",
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "prettier": "^1.16.4",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "@types/graphql": "^14.0.7",
+    "apollo-server": "^2.4.8",
+    "graphql": "^14.1.1",
+    "graphql-tools": "^4.0.4"
+  }
+}
