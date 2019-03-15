@@ -18,6 +18,7 @@ const typeDefs = `
   type Query {
       employees: [Employee]
       employee(uuid: String!): Employee
+      manyEmployees(uuids: [String]!): [Employee]
   }
 `;
 
@@ -52,6 +53,15 @@ const employees: Employee[] = [
 const resolvers = {
   Query: {
     employees: () => employees,
+    manyEmployees: (
+      _: unknown,
+      args: { uuids: string[] },
+      context: unknown,
+      info: unknown
+    ) =>
+      args.uuids.map(uuid =>
+        employees.find((employee: Employee) => employee.uuid === uuid)
+      ),
     employee: (
       _: unknown,
       args: { uuid: string },

@@ -2,7 +2,8 @@ import { ApolloServer, mergeSchemas } from "apollo-server";
 import { employeeSchema, Employee } from "./schemas/employee-schema";
 import { hdmSchema, Vote } from "./schemas/hdm-schema";
 import { hdmEmployeeSchema } from "./schemas/hdm-employee-schema";
-import { GraphQLSchema } from "graphql";
+import { GraphQLSchema, GraphQLResolveInfo } from "graphql";
+import { createBatchResolver } from "graphql-resolve-batch";
 import util from "util";
 
 const mergedSchemas: GraphQLSchema = mergeSchemas({
@@ -11,18 +12,18 @@ const mergedSchemas: GraphQLSchema = mergeSchemas({
     Vote: {
       employee: {
         fragment: `... on Vote { employeeUUID }`,
-        resolve(vote: Vote, args, context, info) {
-          return info.mergeInfo.delegateToSchema({
-            schema: employeeSchema,
-            operation: "query",
-            fieldName: "employee",
-            args: {
-              uuid: vote.employeeUUID
-            },
-            context,
-            info
-          });
-        }
+        resolve: createBatchResolver(
+          async (sources, args, context, info: any) => {
+            return info.mergeInfo.delegateToSchema({
+              schema: employeeSchema,
+              operation: "query",
+              fieldName: "manyEmployees",
+              args: { uuids: sources.map((vote: Vote) => vote.employeeUUID) },
+              context,
+              info
+            });
+          }
+        )
       }
     }
   }
