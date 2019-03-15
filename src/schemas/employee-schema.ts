@@ -23,21 +23,47 @@ const typeDefs = `
 
 const employees: Employee[] = [
   {
-    uuid: "an uuid",
+    uuid: "employeeUUID",
     firstName: "Clément",
     lastName: "Fassot"
+  },
+  {
+    uuid: "employeeUUID2",
+    firstName: "Hugo",
+    lastName: "Wood"
+  },
+  {
+    uuid: "employeeUUID3",
+    firstName: "Clément",
+    lastName: "Van Peuter"
+  },
+  {
+    uuid: "employeeUUID4",
+    firstName: "Marina",
+    lastName: "Blin"
+  },
+  {
+    uuid: "employeeUUID5",
+    firstName: "Jérémy",
+    lastName: "Lejeune"
   }
 ];
 
 const resolvers = {
   Query: {
     employees: () => employees,
-    employee: (uuid: string) =>
-      employees.find((employee: Employee) => employee.uuid === uuid)
+    employee: (
+      _: unknown,
+      args: { uuid: string },
+      context: unknown,
+      info: unknown
+    ) => employees.find((employee: Employee) => employee.uuid === args.uuid)
   }
 };
 
-export const employeeSchema = makeExecutableSchema({
+const employeeSchema = makeExecutableSchema({
   typeDefs,
   resolvers
 });
+
+export { employeeSchema, Employee };
